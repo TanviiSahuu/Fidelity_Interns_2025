@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Stock Details{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h2 class="text-center mb-4">Stock Details</h2>
+    {% if stocks %}
+    <table class="table table-bordered table-hover text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                {% if user.is_authenticated %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.stock_id }}</td>
+                <td>{{ stock.stock_name }}</td>  
+                <td>{{ stock.price }}</td>
+                <td>{{ stock.quantity }}</td>
+                <td>{{ stock.description|default:"N/A" }}</td> 
+                {% if user.is_authenticated %}
+                    <td>
+                        <a href="{% url 'update_stock' stock.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_stock' stock.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-center text-muted">No stock items available.</p>
+    {% endif %}
+</div>
+{% endblock %}
